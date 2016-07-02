@@ -15,19 +15,8 @@ namespace ASP_Decisions.Epo_facade.Tests
         [TestMethod()]
         public async Task EPOSearchResultToDecisionTest()
         {
-            GSP gsp = new GSP();
-            try
-            {
-                gsp = await EpoSearch.SearchCaseNumberAsync("T 0641/00");
-                GSPRESR res = gsp.RES.R[0];
-                Decision dec = EpoSearch.EPOSearchResultToDecision(res);
-
-                Assert.AreEqual(dec.CaseNumber, "T 0641/00");
-            }
-            finally
-            {
-                gsp.Dispose();
-            }
+            List<Decision> dlist = await EpoSearch.SearchCaseNumberAsync("T 0641/00");
+            Assert.AreEqual(dlist.First().CaseNumber, "T 0641/00");           
         }
     }
 
@@ -38,22 +27,17 @@ namespace ASP_Decisions.Epo_facade.Tests
         [TestMethod()]
         public async Task SearchTest()
         {
-            GSP gsp = new GSP();
-            try
-            {
-                gsp = await EpoSearch.SearchLatestAsync();
-                Assert.AreEqual(gsp.RES.R.Count(), 10);
+            List<Decision> dlist = new List<Decision>();
 
-                gsp = await EpoSearch.SearchByBoardAsync("3501", 15);
-                Assert.AreEqual(gsp.RES.R.Count(), 15);
+            dlist = await EpoSearch.SearchLatestAsync();
+            Assert.AreEqual(dlist.Count, 10);
 
-                gsp = await EpoSearch.SearchCaseNumberAsync("T 0641/00");
-                Assert.AreEqual(gsp.RES.R.Count(), 4);
-            }
-            finally
-            {
-                gsp.Dispose();
-            }
+            dlist = await EpoSearch.SearchByBoardAsync("3501", 15);
+            Assert.AreEqual(dlist.Count, 15);
+
+            dlist = await EpoSearch.SearchCaseNumberAsync("T 0641/00");
+            Assert.AreEqual(dlist.Count, 4);
+
         }
     }
 }

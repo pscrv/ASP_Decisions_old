@@ -4,8 +4,31 @@ using System.Data.Entity;
 
 namespace ASP_Decisions.Models
 {
-    public enum Languages { DE, EN, FR }
-    public enum DistributionCodes { A, B, C, D }
+    public static class Generic
+    {
+        public enum Languages { DE, EN, FR }
+        public enum DistributionCodes { A, B, C, D, Unknown }
+
+        public static Dictionary<string, Languages> LanguagesDictionary
+            = new Dictionary<string, Languages>
+        {
+                {"DE", Languages.DE },
+                {"EN", Languages.EN },
+                {"FR", Languages.FR },
+        };
+
+        public static Dictionary<string, DistributionCodes> DistributionDictionary
+            = new Dictionary<string, DistributionCodes>
+        {
+                {"A", DistributionCodes.A },
+                {"B", DistributionCodes.B },
+                {"C", DistributionCodes.C},
+                {"D", DistributionCodes.D },
+                {"", DistributionCodes.Unknown }
+        };
+    }
+
+
 
     public class Decision
     {
@@ -24,7 +47,7 @@ namespace ASP_Decisions.Models
         public string ApplicationNumber { get; set; }
         public string Ipc { get; set; }
         public string Title { get; set; }
-        public Languages ProcedureLanguage { get; set; }
+        public Generic.Languages ProcedureLanguage { get; set; }
 
         public string Board { get; set; }
         public string Keywords { get; set; }
@@ -32,11 +55,11 @@ namespace ASP_Decisions.Models
         public string Rules { get; set; }
         public string Ecli { get; set; }
 
-        public List<string> CitedCases { get; set; }
-        public DistributionCodes Distribution { get; set; }
+        public string CitedCases { get; set; }
+        public Generic.DistributionCodes Distribution { get; set; }
         public string Headword { get; set; }
         public string Catchwords { get; set; }
-        public Languages DecisionLanguage { get; set; }
+        public Generic.Languages DecisionLanguage { get; set; }
 
         public Uri Link { get; set; }
         public Uri PdfLink { get; set; }
