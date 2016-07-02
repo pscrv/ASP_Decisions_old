@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h3> The latest ten decisions </h3>
+
+<div class="col-sm-9">
+
+    @foreach (var dec in ViewBag.decisions)
+    {
+        <a href="{% url 'decision_details' cn=dec.CaseNumber %}">
+            <div class="row well well-sm">
+                <div class="col-sm-2">
+                    @dec.CaseNumber
+                </div>
+                <div class="col-sm-1">
+                    @dec.Board
+                </div>
+                <div class="col-sm-7">
+                    @dec.Title
+                </div>
+            </div>
+        </a>
+    }
+</div>
+
+
+<div class="col-sm-3">
+    <div class="row">
+        <form method="POST" action="{% url 'search_caseNumber' %}" class="post-form pull-right">
+            <input name="q" placeholder="Case number" class="searchfield" type="text" id="searchbox">
+            <button type="submit" class="search btn btn-default">Search</button>
+        </form>
+    </div>
+</div>
