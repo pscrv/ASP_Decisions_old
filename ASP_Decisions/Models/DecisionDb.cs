@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 
 namespace ASP_Decisions.Models
@@ -32,57 +34,54 @@ namespace ASP_Decisions.Models
 
     public class Decision
     {
+        public int Id { get; set; }
+        
         public string CaseNumber { get; set; }
 
-        public bool MetaDownloaed { get; set; }
+        public bool MetaDownloaded { get; set; } = false;
 
-        public DateTime DecisionDate { get; set; }
-        public DateTime OnlineDate { get; set; }
+        public DateTime? DecisionDate { get; set; } = null;
+        public DateTime? OnlineDate { get; set; } = null;
 
-        public string Applicant { get; set; }
-        public string Opponents { get; set; }
-        public string Appellants { get; set; }
-        public string Respondents { get; set; }
+        public string Applicant { get; set; } = "";
+        public string Opponents { get; set; } = "";
+        public string Appellants { get; set; } = "";
+        public string Respondents { get; set; } = "";
 
-        public string ApplicationNumber { get; set; }
-        public string Ipc { get; set; }
-        public string Title { get; set; }
-        public Generic.Languages ProcedureLanguage { get; set; }
+        public string ApplicationNumber { get; set; } = "";
+        public string Ipc { get; set; } = "";
+        public string Title { get; set; } = "";
+        public Generic.Languages? ProcedureLanguage { get; set; } = null;
 
-        public string Board { get; set; }
-        public string Keywords { get; set; }
-        public string Articles { get; set; }
-        public string Rules { get; set; }
-        public string Ecli { get; set; }
+        public string Board { get; set; } = "";
+        public string Keywords { get; set; } = "";
+        public string Articles { get; set; } = "";
+        public string Rules { get; set; } = "";
+        public string Ecli { get; set; } = "";
 
-        public string CitedCases { get; set; }
-        public Generic.DistributionCodes Distribution { get; set; }
-        public string Headword { get; set; }
-        public string Catchwords { get; set; }
-        public Generic.Languages DecisionLanguage { get; set; }
+        public string CitedCases { get; set; } = "";
+        public Generic.DistributionCodes? Distribution { get; set; } = null;
+        public string Headword { get; set; } = "";
+        public string Catchwords { get; set; } = "";
 
-        public Uri Link { get; set; }
-        public Uri PdfLink { get; set; }
+        public Generic.Languages? DecisionLanguage { get; set; } = null;
 
-        public bool TextDownloaded { get; set; }
-        public bool HasSplitText { get; set; }
-        public string FactHeader { get; set; }
-        public string ReasonsHeader { get; set; }
-        public string OrderHeader { get; set; }
-        public string Facts { get; set; }
-        public string Reasons { get; set; }
-        public string Order { get; set; }  
+        public string Link { get; set; } = "";
+        public string PdfLink { get; set; } = "";
+
+        public bool TextDownloaded { get; set; } = false;
+        public bool HasSplitText { get; set; } = false;
+        public string FactHeader { get; set; } = "";
+        public string ReasonsHeader { get; set; } = "";
+        public string OrderHeader { get; set; } = "";
+        public string Facts { get; set; } = "";
+        public string Reasons { get; set; } = "";
+        public string Order { get; set; } = "";
     }
-
-
-
 
 
     public class DecisionDbContext : DbContext
     {
         public DbSet<Decision> Decisions { get; set; }
-
-
-
     }
 }

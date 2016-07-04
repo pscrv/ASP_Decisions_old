@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ASP_Decisions.Epo_facade;
+﻿using ASP_Decisions.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ASP_Decisions.Models;
 
 namespace ASP_Decisions.Epo_facade.Tests
 {
@@ -38,6 +36,17 @@ namespace ASP_Decisions.Epo_facade.Tests
             dlist = await EpoSearch.SearchCaseNumberAsync("T 0641/00");
             Assert.AreEqual(dlist.Count, 4);
 
+        }
+    }
+
+    [TestClass()]
+    public class DailyUpdateTests
+    {
+        [TestMethod()]
+        public async Task DailyUpdateTest()
+        {
+            await DailyUpdate.TryUpdate();
+            Assert.AreEqual(DailyUpdate.LastUpdate.Date, DateTime.Today.Date);
         }
     }
 }

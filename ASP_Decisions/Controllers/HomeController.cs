@@ -11,6 +11,7 @@ namespace ASP_Decisions.Controllers
         public async Task<ActionResult> Index()
         {
             List<Decision> decisions = new List<Decision>();
+            await Epo_facade.DailyUpdate.TryUpdate();
             decisions = await Epo_facade.EpoSearch.SearchLatestAsync();
 
             ViewBag.decisions = decisions;

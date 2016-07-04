@@ -123,19 +123,19 @@ namespace ASP_Decisions.Epo_facade
             decision.Respondents        = "Must implement some extraction for this.";
             decision.Title              = nvc["dg3TLE"];
 
-            decision.Link               = new Uri(result.U);
+            decision.Link               = result.U;
 
             Regex rgx = new Regex(@"http.*?pdf", RegexOptions.IgnoreCase);
             Match m = rgx.Match(nvc["dg3DecisionPDF"]);
             if (m.Success)
-                decision.PdfLink = new Uri(m.Value);
+                decision.PdfLink = m.Value;
             else
-                decision.PdfLink = null;
+                decision.PdfLink = "";
 
             rgx = new Regex(@"\((.*)\)");
             decision.Headword = rgx.Match(nvc["DC.Title"]).ToString();  
 
-            decision.MetaDownloaed = true;
+            decision.MetaDownloaded = true;
             return decision;
         }
 
