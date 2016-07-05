@@ -1,5 +1,6 @@
 ﻿using ASP_Decisions.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -8,11 +9,16 @@ namespace ASP_Decisions.Controllers
 {
     public class HomeController : Controller
     {
+        private DecisionDbContext _dbContext = new DecisionDbContext();
+
         public async Task<ActionResult> Index()
         {
-            List<Decision> decisions = new List<Decision>();
             await Epo_facade.DailyUpdate.TryUpdate();
-            decisions = await Epo_facade.EpoSearch.SearchLatestAsync();
+
+            List<Decision> decisions = _dbContext.Decisions
+                .OrderByDescending(d => d.OnlineDate)
+                .Take(10)
+                .ToList();
 
             ViewBag.decisions = decisions;
             return View();

@@ -156,6 +156,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DecisionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Epo_facade\DailyUpdate.cs" />
     <Compile Include="Epo_facade\EpoXML_Classes.cs" />
@@ -170,6 +171,10 @@
     <Compile Include="Migrations\201607041319506__DateTimeModified.cs" />
     <Compile Include="Migrations\201607041319506__DateTimeModified.Designer.cs">
       <DependentUpon>201607041319506__DateTimeModified.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607042027488__DBCorrections.cs" />
+    <Compile Include="Migrations\201607042027488__DBCorrections.Designer.cs">
+      <DependentUpon>201607042027488__DBCorrections.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DecisionDb.cs" />
@@ -215,6 +220,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Decision\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -236,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607041319506__DateTimeModified.resx">
       <DependentUpon>201607041319506__DateTimeModified.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607042027488__DBCorrections.resx">
+      <DependentUpon>201607042027488__DBCorrections.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

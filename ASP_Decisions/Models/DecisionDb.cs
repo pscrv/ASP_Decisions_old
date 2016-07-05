@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Linq;
 
 namespace ASP_Decisions.Models
 {
@@ -40,7 +41,10 @@ namespace ASP_Decisions.Models
 
         public bool MetaDownloaded { get; set; } = false;
 
+        [DataType(DataType.Date)]
         public DateTime? DecisionDate { get; set; } = null;
+
+        [DataType(DataType.Date)]
         public DateTime? OnlineDate { get; set; } = null;
 
         public string Applicant { get; set; } = "";
@@ -53,6 +57,7 @@ namespace ASP_Decisions.Models
         public string Title { get; set; } = "";
         public Generic.Languages? ProcedureLanguage { get; set; } = null;
 
+        [StringLength(10)]
         public string Board { get; set; } = "";
         public string Keywords { get; set; } = "";
         public string Articles { get; set; } = "";
@@ -71,9 +76,11 @@ namespace ASP_Decisions.Models
 
         public bool TextDownloaded { get; set; } = false;
         public bool HasSplitText { get; set; } = false;
-        public string FactHeader { get; set; } = "";
+        public string FactsHeader { get; set; } = "";
         public string ReasonsHeader { get; set; } = "";
         public string OrderHeader { get; set; } = "";
+
+        [Column(TypeName = "text")]
         public string Facts { get; set; } = "";
         public string Reasons { get; set; } = "";
         public string Order { get; set; } = "";
@@ -83,5 +90,22 @@ namespace ASP_Decisions.Models
     public class DecisionDbContext : DbContext
     {
         public DbSet<Decision> Decisions { get; set; }
+
+        public void AddOrUpdate(Decision decision, bool forceUpdate = false)
+        {
+            Decision inDB = this.Decisions.FirstOrDefault(
+                       dec => dec.CaseNumber == decision.CaseNumber
+                               && dec.DecisionLanguage == decision.DecisionLanguage);
+
+            bool mustAdd = inDB == null || forceUpdate;
+
+            if (mustAdd)
+            {
+                this.Decisions.Add(decision);
+                if (inDB != null)
+                    this.Decisions.Remove(inDB);
+                this.SaveChanges();               
+            }
+        }
     }
 }

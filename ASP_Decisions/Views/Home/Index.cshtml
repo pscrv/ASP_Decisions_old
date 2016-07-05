@@ -1,6 +1,6 @@
-﻿@{
+﻿@*@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+}*@
 
 
 
@@ -9,8 +9,8 @@
 <div class="col-sm-9">
 
     @foreach (var dec in ViewBag.decisions)
-    {
-        <a href="{% url 'decision_details' cn=dec.CaseNumber %}">
+    {        
+        <a href=@Url.Action("Details", "Decision", new { id = dec.Id })>     
             <div class="row well well-sm">
                 <div class="col-sm-2">
                     @dec.CaseNumber

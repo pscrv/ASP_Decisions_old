@@ -92,6 +92,31 @@ namespace ASP_Decisions.Epo_facade
                 return (GSP)serializer.Deserialize(sre);
             }
         }
+
+        /// <summary>
+        /// TrimPunctuation from start and end of string.
+        /// </summary>
+        private static bool _isPunctuationAndWhitespace(string value)
+        {
+            bool result = true;
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (!char.IsPunctuation(value[i]) && !char.IsWhiteSpace(value[i]))
+                {
+                    result = false;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        private static string _formatString(string str)
+        {
+            if (_isPunctuationAndWhitespace(str))
+                return "";
+            else
+                return str.Trim();
+        }
         #endregion
 
 
@@ -104,36 +129,36 @@ namespace ASP_Decisions.Epo_facade
 
             Decision decision = new Decision();
             decision.Appellants         = "Must implement some extraction for this.";
-            decision.Applicant          = nvc["dg3Applicant"];
-            decision.ApplicationNumber  = nvc["dg3APN"];
-            decision.Articles           = nvc["dg3ArtRef"];
-            decision.Board              = nvc["dg3DecisionBoard"];
-            decision.CaseNumber         = nvc["dg3CSNCase"];
-            decision.Catchwords         = nvc["Must implement some extraction for this."];
-            decision.CitedCases         = nvc["dg3aDCI"];
+            decision.Applicant          = _formatString(nvc["dg3Applicant"]);
+            decision.ApplicationNumber  = _formatString(nvc["dg3APN"]);
+            decision.Articles           = _formatString(nvc["dg3ArtRef"]);
+            decision.Board              = _formatString(nvc["dg3DecisionBoard"]);
+            decision.CaseNumber         = _formatString(nvc["dg3CSNCase"]);
+            decision.Catchwords         = "Must implement some extraction for this.";
+            decision.CitedCases         = _formatString(nvc["dg3aDCI"]);
             decision.DecisionDate       = DateTime.Parse(nvc["dg3DecisionDate"]);
             decision.DecisionLanguage   = Generic.LanguagesDictionary[nvc["dg3DecisionLang"].ToUpper()];                ;
             decision.Distribution       = Generic.DistributionDictionary[nvc["dg3DecisionDistributionKey"].ToUpper()];
-            decision.Ecli               = nvc["dg3ECLI"];
-            decision.Ipc                = nvc["dg3CaseIPC"];
-            decision.Keywords           = nvc["dg3KEY"];
+            decision.Ecli               = _formatString(nvc["dg3ECLI"]);
+            decision.Ipc                = _formatString(nvc["dg3CaseIPC"]);
+            decision.Keywords           = _formatString(nvc["dg3KEY"]);
             decision.OnlineDate         = DateTime.Parse(nvc["dg3DecisionOnline"]);
-            decision.Opponents          = nvc["dg3Opponent"];
+            decision.Opponents          = _formatString(nvc["dg3Opponent"]);
             decision.ProcedureLanguage  = Generic.LanguagesDictionary[nvc["dg3DecisionPRL"].ToUpper()];
             decision.Respondents        = "Must implement some extraction for this.";
-            decision.Title              = nvc["dg3TLE"];
+            decision.Title              = _formatString(nvc["dg3TLE"]);
 
-            decision.Link               = result.U;
+            decision.Link               = _formatString(result.U);
 
             Regex rgx = new Regex(@"http.*?pdf", RegexOptions.IgnoreCase);
             Match m = rgx.Match(nvc["dg3DecisionPDF"]);
             if (m.Success)
-                decision.PdfLink = m.Value;
+                decision.PdfLink = _formatString(m.Value);
             else
                 decision.PdfLink = "";
 
             rgx = new Regex(@"\((.*)\)");
-            decision.Headword = rgx.Match(nvc["DC.Title"]).ToString();  
+            decision.Headword = _formatString(rgx.Match(nvc["DC.Title"]).ToString());  
 
             decision.MetaDownloaded = true;
             return decision;

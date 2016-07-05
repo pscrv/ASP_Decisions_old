@@ -13,7 +13,7 @@ namespace ASP_Decisions.Epo_facade
         public static async Task TryUpdate()
         {
             // maximum of one update per day
-            if (DateTime.Today.Date == LastUpdate)
+            if (DateTime.Today.Date == LastUpdate.Date)
                 return;
 
             // get the ten latest decisions from the epo server
@@ -25,22 +25,13 @@ namespace ASP_Decisions.Epo_facade
                     return;
 
                 DecisionDbContext dbContext = new DecisionDbContext();
-                var decs = dbContext.Decisions;
-                
-                foreach (Decision decision in dlist)
-                {
-                    Decision inDB = dbContext.Decisions.FirstOrDefault(
-                        dec => dec.CaseNumber == decision.CaseNumber 
-                                && dec.DecisionLanguage == decision.DecisionLanguage);
 
-                    if (inDB == null)
-                        dbContext.Decisions.Add(decision);
-                }
-                dbContext.SaveChanges();
+                foreach (Decision decision in dlist)
+                    dbContext.AddOrUpdate(decision);
             }
             catch (Exception e)
             {
-                throw new Exception("Something went wrong is checking for decisions in the DB or in writing a new decision to it.");
+                throw new Exception("Something went wrong is checking for decisions in the DB or in writing a new decision to it. Exception: " + e.Message + " Inner exception: " + e.InnerException);
             }
         }
 
