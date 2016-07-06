@@ -1,7 +1,47 @@
 ﻿@{
     ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+    var counts = ViewBag.CountDictionary as Dictionary<string, ASP_Decisions.Controllers.HomeController._Counts_>;
+    var types = ViewBag.Types as List<string>;
+}
+
+<h2> @ViewBag.Title </h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <p>
+                This is an experimental application for displaying decisions taken by the Boards of Appeal of the European Patent Office.
+                At present, it just presents a list of recent decisions, and a detailed view of each.
+                The decisions are held in a database, and it is the intention that it could become a separate repository for decisions.
+            </p>
+        </div>
+
+        <div class="col-sm-6">
+            <h4> State of the database </h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> Decison type </th>
+                        <th> Number of cases </th>
+                        <th> Metadata downloaded </th>
+                        <th> Text downloaded </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (string str in types)
+                    {
+                        <tr>
+                            <td> @str </td>
+                            <td> @counts[str].Total </td>
+                            <td> @counts[str].WithMeta </td>
+                            <td> @counts[str].WithText </td>
+                        </tr>
+                    }                   
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+

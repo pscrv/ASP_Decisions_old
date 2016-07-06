@@ -26,8 +26,20 @@ namespace ASP_Decisions.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            List<string> types = new List<string> {"T", "G", "R", "J", "D", "W", "All" };
+            Dictionary<string, _Counts_> countDictionary = new Dictionary<string, _Counts_>();
 
+            foreach (string str in types)
+                countDictionary[str] = _countType(str);
+
+            _Counts_ all = new _Counts_();
+            all.Total = _dbContext.Decisions.Count();
+            all.WithMeta = _dbContext.Decisions.Count(dec => dec.MetaDownloaded);
+            all.WithText = _dbContext.Decisions.Count(dec => dec.TextDownloaded);
+            countDictionary["All"] = all;
+
+            ViewBag.CountDictionary = countDictionary;
+            ViewBag.Types = types;
             return View();
         }
 
@@ -37,5 +49,34 @@ namespace ASP_Decisions.Controllers
 
             return View();
         }
+
+
+        #region private helper methods
+        private _Counts_ _countType(string start)
+        {
+            _Counts_ result = new _Counts_();
+            
+            result.Total = _dbContext.Decisions.Count(dec => dec.CaseNumber.StartsWith(start));
+            result.WithMeta = _dbContext.Decisions.Count(
+                dec => dec.CaseNumber.StartsWith(start)
+                && dec.MetaDownloaded);
+            result.WithText = _dbContext.Decisions.Count(
+                dec => dec.CaseNumber.StartsWith(start)
+                && dec.TextDownloaded);
+
+            return result;
+        }
+        #endregion
+
+        #region helper struct
+        public struct _Counts_
+        {
+            public int Total;
+            public int WithMeta;
+            public int WithText;
+        }
+        #endregion
     }
+
+
 }

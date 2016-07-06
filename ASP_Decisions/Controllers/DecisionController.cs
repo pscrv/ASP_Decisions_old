@@ -156,10 +156,8 @@ namespace ASP_Decisions.Controllers
         {
             List<Decision> citedDecisions = new List<Decision>();
 
-
             foreach (string cited in decision.CitedCases.Split(','))
             {
-
                 string ctd = cited.Trim();
                 Decision inDB = db.Decisions.FirstOrDefault(
                     dec => dec.CaseNumber == ctd
@@ -177,18 +175,16 @@ namespace ASP_Decisions.Controllers
                     // add it to the DB
 
                     List<Decision> fromEPO = await Epo_facade.EpoSearch.SearchCaseNumberAsync(ctd);
-
                     if (fromEPO == null || fromEPO.Count == 0)
                     {
                         citedDecisions.Add(new Decision() { CaseNumber = ctd, Title = "Not found" });
                         continue;
                     }
-
-                    DecisionDbContext dbContext = new DecisionDbContext();
+                    
                     bool added = false;
                     foreach (Decision dec in fromEPO)
                     {
-                        dbContext.AddOrUpdate(dec);
+                        db.AddOrUpdate(dec);
                         if (dec.DecisionLanguage == dec.ProcedureLanguage && !added)
                         {
                             citedDecisions.Add(dec);

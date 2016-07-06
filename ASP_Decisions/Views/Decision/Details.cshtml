@@ -40,7 +40,7 @@
                         @foreach (var cited in ViewBag.CitedDecisions)
                         {
                             <a href=@Url.Action("Details", "Decision", new { id = cited.Id })>
-                                @cited.CaseNumber
+                                @cited.CaseNumber.Replace(' ', '\u00A0')
                             </a>
                         }
                     </p>

@@ -5,8 +5,7 @@ using System.Web;
 
 namespace ASP_Decisions.Epo_facade
 {
-
-
+    #region GSP classes  - epo search results
     /// <remarks/>
     [System.SerializableAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
@@ -654,7 +653,5 @@ namespace ASP_Decisions.Epo_facade
             }
         }
     }
-
-
-
+    #endregion
 }

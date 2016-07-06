@@ -1,4 +1,5 @@
 ﻿using ASP_Decisions.Models;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -66,8 +67,11 @@ namespace ASP_Decisions.Epo_facade
                 GSP gsp = new GSP();
                 try
                 {
-                    gsp = await _parseXML(res);
                     List<Decision> decList = new List<Decision>();
+                    gsp = await _parseXML(res);
+                    if (gsp == null || gsp.RES == null || gsp.RES.R == null || gsp.RES.R.Length == 0)
+                        return decList;
+
                     foreach (GSPRESR result in gsp.RES.R)
                         decList.Add(EPOSearchResultToDecision(result));
                     return decList;
@@ -79,6 +83,22 @@ namespace ASP_Decisions.Epo_facade
             }
 
         }
+        #endregion
+
+        #region html page methods
+        public static async Task<HtmlDocument> DocmentFromLink(string url)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage res = await client.GetAsync(url);
+                HtmlDocument doc = new HtmlDocument();
+                doc.Load(await res.Content.ReadAsStreamAsync());
+                return doc;
+            }            
+        }
+
+
+
         #endregion
 
 
@@ -93,35 +113,7 @@ namespace ASP_Decisions.Epo_facade
             }
         }
 
-        /// <summary>
-        /// TrimPunctuation from start and end of string.
-        /// </summary>
-        private static bool _isPunctuationAndWhitespace(string value)
-        {
-            bool result = true;
-            for (int i = 0; i < value.Length; i++)
-            {
-                if (!char.IsPunctuation(value[i]) && !char.IsWhiteSpace(value[i]))
-                {
-                    result = false;
-                    break;
-                }
-            }
-            return result;
-        }
-
-        private static string _formatString(string str)
-        {
-            if (_isPunctuationAndWhitespace(str))
-                return "";
-            else
-                return str.Trim();
-        }
-        #endregion
-
-
-        #region exract Decision data from GSP
-        public static Decision EPOSearchResultToDecision(GSPRESR result)
+        private static Decision EPOSearchResultToDecision(GSPRESR result)
         {
             NameValueCollection nvc = new NameValueCollection();
             foreach (GSPRESRMT metafield in result.MT)
@@ -164,12 +156,29 @@ namespace ASP_Decisions.Epo_facade
             return decision;
         }
 
+        private static bool _isPunctuationAndWhitespace(string value)
+        {
+            bool result = true;
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (!char.IsPunctuation(value[i]) && !char.IsWhiteSpace(value[i]))
+                {
+                    result = false;
+                    break;
+                }
+            }
+            return result;
+        }
 
-
-
-
-
+        private static string _formatString(string str)
+        {
+            if (_isPunctuationAndWhitespace(str))
+                return "";
+            else
+                return str.Trim();
+        }
         #endregion
+        
 
 
 

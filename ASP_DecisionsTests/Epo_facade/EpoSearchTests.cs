@@ -1,4 +1,5 @@
 ﻿using ASP_Decisions.Models;
+using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,17 @@ namespace ASP_Decisions.Epo_facade.Tests
         {
             await DailyUpdate.TryUpdate();
             Assert.AreEqual(DailyUpdate.LastUpdate.Date, DateTime.Today.Date);
+        }
+    }
+
+    [TestClass()]
+    public class FromHTMLTests
+    {
+        [TestMethod()]
+        public async Task DocmentFromLinkTest()
+        {
+            HtmlDocument doc =  await EpoSearch.DocmentFromLink("http://www.epo.org/law-practice/case-law-appeals/recent/t000641ex1.html").ConfigureAwait(false);
+            Assert.IsTrue(doc.DocumentNode != null);
         }
     }
 }
