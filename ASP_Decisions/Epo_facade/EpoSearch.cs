@@ -85,20 +85,116 @@ namespace ASP_Decisions.Epo_facade
         }
         #endregion
 
-        #region html page methods
-        public static async Task<HtmlDocument> DocmentFromLink(string url)
+
+        #region html methods
+        private static async Task<HtmlDocument> _docmentFromLinkAsync(string url)
         {
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage res = await client.GetAsync(url);
+                HttpResponseMessage res = await client.GetAsync(url).ConfigureAwait(false);
                 HtmlDocument doc = new HtmlDocument();
-                doc.Load(await res.Content.ReadAsStreamAsync());
-                return doc;
+                string charset = res.Content.Headers.ContentType.CharSet;
+                if (charset == null)
+                    charset = "utf-8";
+                Encoding encoding = Encoding.GetEncoding(charset);
+
+                using (Stream sr = await res.Content.ReadAsStreamAsync())
+                using (StreamReader sre = new StreamReader(sr, encoding))
+                {
+                    doc.Load(sre);
+                    return doc;
+                }
             }            
         }
+        
+        public static void GetDecisionText(Decision decision, bool forceUpdate = false)
+        {
+            if (decision.TextDownloaded && !forceUpdate)
+                return;
 
+            if (!decision.MetaDownloaded || decision.Link == "")
+                return;
 
+            HtmlDocument htmldoc = _docmentFromLinkAsync(decision.Link).Result;
 
+            HtmlNode bodyDiv = htmldoc.DocumentNode.SelectNodes("//div[@id='body']")[0];
+            if (bodyDiv == null)
+                return;
+
+            List<HtmlNode> toRemove = new List<HtmlNode>();
+            foreach (HtmlNode node in bodyDiv.ChildNodes)
+            {
+                if (node.Name != "p")
+                    toRemove.Add(node);
+            }
+
+            foreach (HtmlNode node in toRemove)
+                node.Remove();
+
+            IList<HtmlNode> headers = bodyDiv.SelectNodes("//b");
+            if (headers.Count != 3)
+            {
+                decision.FactsHeader = "See Reasons.";
+                decision.Facts = "";
+                decision.ReasonsHeader = "";
+                decision.Reasons = _stringFromParas(bodyDiv.SelectNodes("//p"));
+                decision.OrderHeader = "See Reasons.";
+                decision.Order = "";
+                decision.TextDownloaded = true;
+                decision.HasSplitText = false;
+            }
+            else
+            {
+                decision.FactsHeader = headers[0].InnerText;
+                decision.Facts = _stringFromParas(_loopToHeader(headers[0].ParentNode.NextSibling));
+                decision.ReasonsHeader = headers[1].InnerText;
+                decision.Reasons = _stringFromParas(_loopToHeader(headers[1].ParentNode.NextSibling));
+                decision.OrderHeader = headers[2].InnerText;
+                decision.Order = _stringFromParas(_loopToHeader(headers[2].ParentNode.NextSibling));
+                decision.TextDownloaded = true;
+                decision.HasSplitText = true;
+            } 
+        }
+
+        private static string _stringFromParas(IList<HtmlNode> paras)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (HtmlNode p in paras)
+            {
+                if (!_isPunctuationAndWhitespace(p.InnerText))
+                {
+                    builder.Append(p.InnerText.Trim());
+                    builder.Append("\n\n");
+                }
+            }            
+            return builder.ToString();
+        }
+
+        private static List<HtmlNode> _loopToHeader(HtmlNode node)
+        {
+            List<HtmlNode> paraList = new List<HtmlNode>();
+            while (node != null)
+            {
+                paraList.Add(node);
+                node = node.NextSibling;
+                if (node != null)
+                {
+                    HtmlNode nextSib = node.NextSibling;
+                    if (nextSib == null || nextSib.Element("b") != null)
+                    // there is no next sibling, or the next sibling is a header
+                    // either way, we have reached the end of the section
+                    // so add this node and return
+                    {
+                        paraList.Add(node);
+                        return paraList;
+                    }
+                    // else: keep looping
+                }
+                else
+                    return paraList; // we have just dealt with the last node
+            }
+            return null; // only if the node passed in is null?
+        }  
         #endregion
 
 

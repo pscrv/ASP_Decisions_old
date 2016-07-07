@@ -54,11 +54,26 @@ namespace ASP_Decisions.Epo_facade.Tests
     [TestClass()]
     public class FromHTMLTests
     {
+        private string url = "http://www.epo.org/law-practice/case-law-appeals/recent/t000641ex1.html";
+        private string url2 = "http://www.epo.org/law-practice/case-law-appeals/recent/t111317du1.html";
+
+        //[TestMethod()]
+        //public async Task DocmentFromLinkTest()
+        //{
+        //    HtmlDocument doc = await EpoSearch.DocmentFromLinkAsync(url);
+        //    Assert.IsTrue(doc.DocumentNode != null);
+        //}
+
         [TestMethod()]
-        public async Task DocmentFromLinkTest()
+        public void GetDecisionTextTest()
         {
-            HtmlDocument doc =  await EpoSearch.DocmentFromLink("http://www.epo.org/law-practice/case-law-appeals/recent/t000641ex1.html").ConfigureAwait(false);
-            Assert.IsTrue(doc.DocumentNode != null);
+            Decision dec = new Decision();
+            dec.Link = url2;
+            dec.MetaDownloaded = true;
+
+            EpoSearch.GetDecisionText(dec);
+            Assert.IsTrue(dec.TextDownloaded);
+            Assert.IsTrue(dec.HasSplitText);
         }
     }
 }

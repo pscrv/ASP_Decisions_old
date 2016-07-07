@@ -1,13 +1,12 @@
-﻿using System;
+﻿using ASP_Decisions.Epo_facade;
+using ASP_Decisions.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using ASP_Decisions.Models;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ASP_Decisions.Controllers
 {
@@ -35,28 +34,16 @@ namespace ASP_Decisions.Controllers
             }
 
             List<Decision> citedDecisions = new List<Decision>();
-
             if (decision.CitedCases != "")
                 citedDecisions = await _getCited(decision);
-
-
             ViewBag.CitedDecisions = citedDecisions;
 
-            ViewBag.Facts = new List<string>
-            {
-                "The first Facts string.",
-                "The second Facts string."
-            };
-            ViewBag.Reasons = new List<string>
-            {
-                "The first Reasons string.",
-                "The second Reasons string."
-            };
-            ViewBag.Order = new List<string>
-            {
-                "The first Order string.",
-                "The second Order string."
-            };
+            if (!decision.TextDownloaded)
+                EpoSearch.GetDecisionText(decision);
+
+            ViewBag.Facts = decision.Facts.Split(new string[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
+            ViewBag.Reasons = decision.Reasons.Split(new string[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
+            ViewBag.Order = decision.Order.Split(new string[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             return View(decision);
         }
