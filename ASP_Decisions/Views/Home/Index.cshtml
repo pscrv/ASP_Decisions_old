@@ -1,14 +1,11 @@
-﻿@*@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}*@
+﻿@model  List<ASP_Decisions.Models.Decision>
 
 
-
-<h3> The latest ten decisions </h3>
+<h3> The latest decisions </h3>
 
 <div class="col-sm-9">
 
-    @foreach (var dec in ViewBag.decisions)
+    @foreach (var dec in Model)
     {        
         <a href=@Url.Action("Details", "Decision", new { id = dec.Id })>     
             <div class="row well well-sm">
@@ -28,10 +25,17 @@
 
 
 <div class="col-sm-3">
-    <div class="row">
-        <form method="POST" action="{% url 'search_caseNumber' %}" class="post-form pull-right">
+    @*<div class="row">
+        <form method="GET" action="Search/CaseSearch" class="pull-right">
             <input name="q" placeholder="Case number" class="searchfield" type="text" id="searchbox">
             <button type="submit" class="search btn btn-default">Search</button>
         </form>
-    </div>
+    </div>*@
+    <form class="form-inline">
+        <div class="form-group">
+            <label class="sr-only" for="caseNumber">Case Number</label>
+            <input type="text" class="form-control" id="caseNumber" name="caseNumber" placeholder="Case Number">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 </div>

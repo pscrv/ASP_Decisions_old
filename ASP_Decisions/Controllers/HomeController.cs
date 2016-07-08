@@ -1,4 +1,5 @@
 ﻿using ASP_Decisions.Models;
+using ASP_Decisions.Search;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,15 +14,26 @@ namespace ASP_Decisions.Controllers
 
         public async Task<ActionResult> Index()
         {
+            string searchTerm = Request["caseNumber"];
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                Decision decision = LocalAndRemoteSearch.SearchCaseNumber(searchTerm);
+                if (decision == null)
+                    return RedirectToAction("Index", "Home");
+                else
+                    return RedirectToAction("Details", "Decision", new { id = decision.Id });
+            }
+
+
             await Epo_facade.DailyUpdate.TryUpdate();
 
             List<Decision> decisions = _dbContext.Decisions
                 .OrderByDescending(d => d.OnlineDate)
                 .Take(10)
                 .ToList();
-
-            ViewBag.decisions = decisions;
-            return View();
+            
+            return View(decisions);
         }
 
         public ActionResult About()
@@ -45,8 +57,6 @@ namespace ASP_Decisions.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 

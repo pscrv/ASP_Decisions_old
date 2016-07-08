@@ -63,7 +63,7 @@ namespace ASP_Decisions.Epo_facade
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage res = await client.GetAsync(uri);
+                HttpResponseMessage res = await client.GetAsync(uri).ConfigureAwait(false);
                 GSP gsp = new GSP();
                 try
                 {
