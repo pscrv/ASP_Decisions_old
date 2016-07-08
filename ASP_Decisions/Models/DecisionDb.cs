@@ -107,5 +107,17 @@ namespace ASP_Decisions.Models
                 this.SaveChanges();               
             }
         }
+
+        public void Save(Decision decision)
+        {
+            Decision inDB = this.Decisions.FirstOrDefault(dec => dec.Id == decision.Id);
+
+            if (inDB == null)
+            {
+                this.Decisions.Add(decision);
+            }
+
+            this.SaveChanges();
+        }
     }
 }

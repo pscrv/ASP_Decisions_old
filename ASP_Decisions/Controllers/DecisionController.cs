@@ -39,7 +39,10 @@ namespace ASP_Decisions.Controllers
             ViewBag.CitedDecisions = citedDecisions;
 
             if (!decision.TextDownloaded)
+            {
                 EpoSearch.GetDecisionText(decision);
+                db.SaveChanges();
+            }
 
             ViewBag.Facts = decision.Facts.Split(new string[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
             ViewBag.Reasons = decision.Reasons.Split(new string[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);

@@ -141,7 +141,7 @@ namespace ASP_Decisions.Epo_facade
                 decision.OrderHeader = "See Reasons.";
                 decision.Order = "";
                 decision.TextDownloaded = true;
-                decision.HasSplitText = false;
+                decision.HasSplitText = false;                
             }
             else
             {
