@@ -1,5 +1,5 @@
-﻿using ASP_Decisions.Epo_facade;
-using ASP_Decisions.Models;
+﻿using ASP_Decisions_v1.Epo_facade;
+using ASP_Decisions_v1.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace ASP_Decisions.Controllers
+namespace ASP_Decisions_v1.Controllers
 {
     public class DecisionController : Controller
     {

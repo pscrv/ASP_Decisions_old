@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 
-namespace ASP_Decisions.Models
+namespace ASP_Decisions_v1.Models
 {
     public static class Generic
     {

@@ -1,4 +1,4 @@
-﻿using ASP_Decisions.Models;
+﻿using ASP_Decisions_v1.Models;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -9,8 +9,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using ASP_Decisions_v1.Globals;
 
-namespace ASP_Decisions.Epo_facade
+namespace ASP_Decisions_v1.Epo_facade
 {
     public static class EpoSearch
     {
@@ -57,31 +58,47 @@ namespace ASP_Decisions.Epo_facade
             queryString["entsp"] = "0";
             queryString["sort"] = "date:D:R:d1";
             
-            UriBuilder uriBuilder = new UriBuilder("http://www.epo.org/footer/search.html");
+            UriBuilder uriBuilder = new UriBuilder(Constants.EpoSearchUri);
             uriBuilder.Query = queryString.ToString();
             Uri uri = uriBuilder.Uri;
 
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage res = await client.GetAsync(uri).ConfigureAwait(false);
-                GSP gsp = new GSP();
                 try
                 {
-                    List<Decision> decList = new List<Decision>();
-                    gsp = await _parseXML(res);
-                    if (gsp == null || gsp.RES == null || gsp.RES.R == null || gsp.RES.R.Length == 0)
+                    HttpResponseMessage res = await client.GetAsync(uri).ConfigureAwait(false);
+                    AppState.LastConnectionAttempt = AppState.Connection.Success;
+
+                    using (GSP gsp1 = await _parseXML(res))
+                    {
+                        List<Decision> decList = new List<Decision>();
+                        if (gsp1 == null || gsp1.RES == null || gsp1.RES.R == null || gsp1.RES.R.Length == 0)
+                            return decList;
+
+                        foreach (GSPRESR result in gsp1.RES.R)
+                            decList.Add(EPOSearchResultToDecision(result));
                         return decList;
-
-                    foreach (GSPRESR result in gsp.RES.R)
-                        decList.Add(EPOSearchResultToDecision(result));
-                    return decList;
+                    }
                 }
-                finally
+                catch(HttpRequestException ex)
                 {
-                    gsp.Dispose();
-                }
-            }
+                    if (ex.InnerException.Message.StartsWith("The remote name could not be resolved"))
+                    {
+                       AppState.LastConnectionAttempt = AppState.Connection.NoConnection;
+                    }
+                    else
+                    {
+                        AppState.HttpRequestExceptions.Add(ex.Message);
+                    }
 
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    AppState.UnknownExceptions.Add(ex.GetType().Name + "   " + ex.Message);
+                    return null;
+                }                
+            }
         }
         #endregion
 
@@ -91,18 +108,39 @@ namespace ASP_Decisions.Epo_facade
         {
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage res = await client.GetAsync(url).ConfigureAwait(false);
-                HtmlDocument doc = new HtmlDocument();
-                string charset = res.Content.Headers.ContentType.CharSet;
-                if (charset == null)
-                    charset = "utf-8";
-                Encoding encoding = Encoding.GetEncoding(charset);
-
-                using (Stream sr = await res.Content.ReadAsStreamAsync())
-                using (StreamReader sre = new StreamReader(sr, encoding))
+                try
                 {
-                    doc.Load(sre);
-                    return doc;
+                    HttpResponseMessage res = await client.GetAsync(url).ConfigureAwait(false);
+                    HtmlDocument doc = new HtmlDocument();
+                    string charset = res.Content.Headers.ContentType.CharSet;
+                    if (charset == null)
+                        charset = "utf-8";
+                    Encoding encoding = Encoding.GetEncoding(charset);
+
+                    using (Stream sr = await res.Content.ReadAsStreamAsync())
+                    using (StreamReader sre = new StreamReader(sr, encoding))
+                    {
+                        doc.Load(sre);
+                        return doc;
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    if (ex.InnerException.Message.StartsWith("The remote name could not be resolved"))
+                    {
+                        AppState.LastConnectionAttempt = AppState.Connection.NoConnection;
+                    }
+                    else
+                    {
+                        AppState.HttpRequestExceptions.Add(ex.Message);
+                    }
+
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    AppState.UnknownExceptions.Add(ex.GetType().Name + "   " + ex.Message);
+                    return null;
                 }
             }            
         }
@@ -116,6 +154,8 @@ namespace ASP_Decisions.Epo_facade
                 return;
 
             HtmlDocument htmldoc = _docmentFromLinkAsync(decision.Link).Result;
+            if (htmldoc == null)
+                return;
 
             HtmlNode bodyDiv = htmldoc.DocumentNode.SelectNodes("//div[@id='body']")[0];
             if (bodyDiv == null)

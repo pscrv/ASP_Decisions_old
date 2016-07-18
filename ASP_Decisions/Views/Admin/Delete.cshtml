@@ -1,0 +1,280 @@
+﻿@model ASP_Decisions_v1.Models.Decision
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Decision</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CaseNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CaseNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MetaDownloaded)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MetaDownloaded)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DecisionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DecisionDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OnlineDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OnlineDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Applicant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Applicant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Opponents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Opponents)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Appellants)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Appellants)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Respondents)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Respondents)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ipc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ipc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProcedureLanguage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProcedureLanguage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Board)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Board)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Keywords)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Keywords)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Articles)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Articles)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rules)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rules)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ecli)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ecli)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CitedCases)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CitedCases)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Distribution)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Distribution)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Headword)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Headword)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Catchwords)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Catchwords)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DecisionLanguage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DecisionLanguage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Link)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Link)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PdfLink)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PdfLink)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TextDownloaded)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TextDownloaded)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HasSplitText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HasSplitText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FactsHeader)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FactsHeader)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReasonsHeader)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReasonsHeader)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderHeader)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderHeader)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Facts)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Facts)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reasons)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reasons)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

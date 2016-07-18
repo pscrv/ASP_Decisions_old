@@ -68,9 +68,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ASP_Decisions\ASP_Decisions.csproj">
+    <ProjectReference Include="..\ASP_Decisions\ASP_Decisions_v1.csproj">
       <Project>{0E16FF05-ACD6-4C13-A214-262117D7DB70}</Project>
-      <Name>ASP_Decisions</Name>
+      <Name>ASP_Decisions_v1</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

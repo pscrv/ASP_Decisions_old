@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ASP_Decisions.Epo_facade
+namespace ASP_Decisions_v1.Epo_facade
 {
     #region GSP classes  - epo search results
     /// <remarks/>

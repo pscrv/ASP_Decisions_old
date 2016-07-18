@@ -1,4 +1,4 @@
-namespace ASP_Decisions.Migrations
+namespace ASP_Decisions_v1.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;

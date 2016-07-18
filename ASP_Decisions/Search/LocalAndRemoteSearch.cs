@@ -1,5 +1,5 @@
-﻿using ASP_Decisions.Epo_facade;
-using ASP_Decisions.Models;
+﻿using ASP_Decisions_v1.Epo_facade;
+using ASP_Decisions_v1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace ASP_Decisions.Search
+namespace ASP_Decisions_v1.Search
 {
     public static class LocalAndRemoteSearch
     {
@@ -23,9 +23,13 @@ namespace ASP_Decisions.Search
             // a Decision for each language version found, then returns
             // as above
 
-            Decision decision;
+            if (cn.Trim().Length < 4) // too short to be real
+                return null;
+
             cn = FormatCaseNumber(cn);
+
             
+            Decision decision;
             IQueryable<Decision> inDB = from d in _dbContext.Decisions
                                         where d.CaseNumber == cn
                                         select d;
@@ -33,7 +37,7 @@ namespace ASP_Decisions.Search
             if (inDB.Count() == 0)
             {
                 List<Decision> dList = EpoSearch.SearchCaseNumberAsync(cn).Result;
-                if (dList.Count == 0)
+                if (dList == null || dList.Count == 0)
                     return null;
 
                 foreach (Decision d in dList)

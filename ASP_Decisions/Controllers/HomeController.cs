@@ -1,12 +1,12 @@
-﻿using ASP_Decisions.Models;
-using ASP_Decisions.Search;
+﻿using ASP_Decisions_v1.Models;
+using ASP_Decisions_v1.Search;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
 
-namespace ASP_Decisions.Controllers
+namespace ASP_Decisions_v1.Controllers
 {
     public class HomeController : Controller
     {

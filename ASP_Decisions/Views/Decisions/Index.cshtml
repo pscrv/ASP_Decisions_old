@@ -1,0 +1,219 @@
+﻿@model IEnumerable<ASP_Decisions_v1.Models.Decision>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CaseNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MetaDownloaded)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DecisionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OnlineDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Applicant)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Opponents)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Appellants)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Respondents)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicationNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ipc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProcedureLanguage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Board)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Keywords)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Articles)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rules)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ecli)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CitedCases)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Distribution)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Headword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Catchwords)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DecisionLanguage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Link)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PdfLink)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TextDownloaded)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HasSplitText)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FactsHeader)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReasonsHeader)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderHeader)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Facts)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reasons)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CaseNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MetaDownloaded)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DecisionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OnlineDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Applicant)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Opponents)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Appellants)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Respondents)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicationNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ipc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProcedureLanguage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Board)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Keywords)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Articles)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rules)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ecli)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CitedCases)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Distribution)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Headword)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Catchwords)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DecisionLanguage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Link)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PdfLink)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TextDownloaded)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HasSplitText)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FactsHeader)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReasonsHeader)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderHeader)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Facts)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Reasons)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Order)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

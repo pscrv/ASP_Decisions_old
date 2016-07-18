@@ -1,0 +1,90 @@
+﻿@model Decisions_with_admin.Models.Decision
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4" id="bibl-display-parent">
+            <div class="bibl-display" id="bibl-display-div" data-spy="affix">
+                <h1 class="casenumber"> @Html.DisplayFor(model => model.CaseNumber) </h1>
+                <p class="headword"> @Html.DisplayFor(model => model.Headword) </p>
+                <p class="ECLI"> @Html.DisplayFor(model => model.Ecli) </p>
+                <p class="date+board">
+                    @Html.DisplayFor(model => model.DecisionDate)
+                    by board 
+                    @Html.DisplayFor(model => model.Board)
+                    @if (Model.OnlineDate != null)
+                    {
+                        @:(online since 
+                        @Html.DisplayFor(model => model.OnlineDate);
+                        @:)
+                    }
+                </p>
+                <h4 class="title"> @Html.DisplayFor(model => model.Title) </h4>
+                <p class="applicant"> @Html.DisplayFor(model => model.Applicant) </p>
+                @if (Model.Opponents != "")
+                    { <p class="opponents">Opponents: @Html.DisplayFor(model => model.Opponents) </p> }
+                @if (Model.Articles != "")
+                    { <p class="articles+rules"> Article(s) @Html.DisplayFor(model => model.Articles) </p> }
+                @if (Model.Rules != "")
+                    { <p class="articles+rules"> Rules: @Html.DisplayFor(model => model.Rules) </p> }
+                @*<p class="keywords">*@
+                @if (ViewBag.CitedDecisions.Count > 0)
+                {
+                    <p>
+                        Cited decisions:
+                        @foreach (var cited in ViewBag.CitedDecisions)
+                        {
+                            <a href=@Url.Action("Details", "Decision", new { id = cited.Id })>
+                                @cited.CaseNumber.Replace(' ', '\u00A0')
+                            </a>
+                        }
+                    </p>
+                }
+</div>
+        </div>
+
+
+
+        <div class="col-sm-8">
+            <ul class="nav nav-tabs">
+                <li><a data-toggle="tab" href="#procedure">Procedure</a></li>
+                <li class="active"><a data-toggle="tab" href="#reasons">Reasons</a></li>
+                <li><a data-toggle="tab" href="#outcome">Outcome</a></li>
+                <li><a data-toggle="tab" href="#comments">Comments</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="procedure" class="tab-pane fade">
+                    <h4> @Model.FactsHeader </h4>
+                    @foreach (var para in ViewBag.Facts) { <p> @para </p> }
+                </div>
+                <div id="reasons" class="tab-pane fade in active">
+                    <h4> @Model.ReasonsHeader </h4>
+                    @foreach (var para in ViewBag.Reasons) { <p> @para </p> }                    
+                </div>
+                <div id="outcome" class="tab-pane fade">
+                    <h4> @Model.OrderHeader </h4>
+                    @foreach (var para in ViewBag.Order) { <p> @para </p> }
+                </div>
+                <div id="comments" class="tab-pane fade">
+                    <h4> Comments </h4>
+                    <p> There might be comments, one day. </p>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    /* Responsive width when using the bootstrap affix plugin (width became absolute) with a fluid grid */
+    $(function(){
+    var biblDisplayWidth=$('#bibl-display-parent').width();
+    $('#bibl-display-div').css('width', biblDisplayWidth);
+    });
+</script>

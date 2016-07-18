@@ -1,4 +1,4 @@
-﻿using ASP_Decisions.Models;
+﻿using ASP_Decisions_v1.Models;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ASP_Decisions.Epo_facade.Tests
+namespace ASP_Decisions_v1.Epo_facade.Tests
 {
     [TestClass()]
     public class EpoExtractionTests
